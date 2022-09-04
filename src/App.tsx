@@ -1,15 +1,17 @@
-import {useState} from 'react'
-import './App.css'
-import {Component} from "./component";
+import {LoggedOutRouter} from "./routers/logged-out-router";
+import {useReactiveVar} from "@apollo/client";
+import {isLoggedInVar} from "./apollo";
+import {LoggedInRouter} from "./routers/logged-in-router";
+import {PublicRouter} from "./routers/public-router";
 
 function App() {
+    const isLoggedIn = useReactiveVar(isLoggedInVar)
+    console.log({isLoggedIn})
     return (
-        <div className="App">
-            <h1 className="text-3xl font-bold underline">
-                Hello world!
-            </h1>
-            <Component/>
-        </div>
+            <>
+                <PublicRouter/>
+                {isLoggedIn ? <LoggedInRouter/> : <LoggedOutRouter/>}
+            </>
     )
 }
 
