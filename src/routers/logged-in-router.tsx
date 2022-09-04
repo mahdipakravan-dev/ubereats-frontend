@@ -15,14 +15,8 @@ const IS_LOGGED_IN = gql`
 `
 
 export const LoggedInRouter : FC<Props> = (props) => {
-    const {loading,data : {isLoggedIn}} = useQuery(IS_LOGGED_IN)
-    console.log({isLoggedIn})
     return (
         <>
-            {isLoggedIn && <div onClick={() => {
-                isLoggedInVar(false)
-                localStorage.removeItem("UBER__TOKEN");
-            }}>You are logged in , here is private , Click To Logout</div>}
             <Routes>
                 <Route path={'/panel'} element={<Panel />} />
             </Routes>
