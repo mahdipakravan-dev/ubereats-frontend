@@ -23,6 +23,11 @@ export const Login = (props: Props) => {
     const [loginMutation , {loading , data , error , reset}] = useMutation<{account_login : LoginOutputDto} , {loginInput : LoginAccountDto}>(LOGIN_MUTATION , {
         onCompleted : ({ account_login }) => {
             console.log("COMPLETED " , account_login)
+            if(!account_login.ok) {
+                alert(account_login.error)
+                return
+            }
+            AuthHelper.login()
         },
         onError: (err) => {
             console.log("ERRORED " , err)
