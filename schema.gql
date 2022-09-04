@@ -1,0 +1,388 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  name: String!
+  avatar: String!
+  restaurants: [Restaurant!]!
+  slug: String!
+  restaurantCount: Float!
+}
+
+type DishChoiceItem {
+  name: String!
+  price: Float!
+}
+
+type DishChoice {
+  name: String!
+  choices: [DishChoiceItem!]!
+  price: Float!
+}
+
+type Dish {
+  name: String!
+  price: Float!
+  photo: String!
+  description: String!
+  restaurant: Restaurant
+  options: [DishChoice!]
+}
+
+type OrderItemOption {
+  name: String!
+  choice: String
+}
+
+type OrderItem {
+  dish: Dish!
+  options: [OrderItemOption!]
+}
+
+type Order {
+  customer: User!
+  driver: User
+  restaurant: Restaurant!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  totalPrice: Float
+}
+
+enum OrderStatus {
+  Pending
+  Cooking
+  Cooked
+  PickedUp
+  Delivered
+}
+
+type Restaurant {
+  name: String!
+  address: String!
+  avatar: String!
+  verified: Boolean!
+  category: Category
+  owner: User!
+  dishes: [Dish!]!
+  order: [Order!]!
+}
+
+type User {
+  email: String!
+  password: String!
+  role: UserRole!
+  verified: Boolean!
+  restaurants: [Restaurant!]!
+  order: [Order!]!
+  rides: [Order!]!
+}
+
+enum UserRole {
+  CLIENT
+  OWNER
+  DELIVERY
+}
+
+type CreateAccountOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type LoginOutputDto {
+  error: String
+  ok: Boolean!
+  token: String
+}
+
+type UserProfileOutputDto {
+  error: String
+  ok: Boolean!
+  user: User
+}
+
+type EditAccountOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type VerifyAccountOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type CreateRestaurantOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type EditRestaurantOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type DeleteRestaurantOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type AllRestaurantsOutput {
+  error: String
+  ok: Boolean!
+  pageNumber: Float
+  totalPages: Float
+  totalResults: Float
+  results: [Restaurant!]
+}
+
+type SearchRestaurantOutputDto {
+  error: String
+  ok: Boolean!
+  pageNumber: Float
+  totalPages: Float
+  totalResults: Float
+  restaurants: [Restaurant!]
+}
+
+type AllCategoriesOutputDto {
+  error: String
+  ok: Boolean!
+  categories: [Category!]
+}
+
+type CategoryOutput {
+  error: String
+  ok: Boolean!
+  pageNumber: Float
+  totalPages: Float
+  totalResults: Float
+  category: Category
+}
+
+type CreateDishOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type EditDishOutputDto {
+  error: String
+  ok: Boolean!
+}
+
+type CreateOrderOutputDto {
+  error: String
+  ok: Boolean!
+  orderId: Int
+}
+
+type GetOrdersOutput {
+  error: String
+  ok: Boolean!
+  orders: [Order!]
+}
+
+type GetOrderOutput {
+  error: String
+  ok: Boolean!
+  order: Order
+}
+
+type EditOrderOutput {
+  error: String
+  ok: Boolean!
+}
+
+input DishOptionItemType {
+  name: String!
+  price: Float!
+}
+
+input DishOptionInputType {
+  name: String!
+  choices: [DishOptionItemType!]!
+  price: Float!
+}
+
+type Query {
+  account(userId: Float!): UserProfileOutputDto!
+  restaurant_all(input: AllRestaurantsInput!): AllRestaurantsOutput!
+  restaurant_search(input: SearchRestaurantDto!): SearchRestaurantOutputDto!
+  categories_all: AllCategoriesOutputDto!
+  category(input: CategoryDto!): CategoryOutput!
+  order_getMany(input: GetOrdersInput!): GetOrdersOutput!
+  order_getOne(input: GetOrderInput!): GetOrderOutput!
+}
+
+input AllRestaurantsInput {
+  page: Float = 1
+}
+
+input SearchRestaurantDto {
+  page: Float = 1
+  query: String!
+}
+
+input CategoryDto {
+  page: Float = 1
+  slug: String!
+}
+
+input GetOrdersInput {
+  status: OrderStatus
+}
+
+input GetOrderInput {
+  id: Float!
+}
+
+type Mutation {
+  account_register(input: CreateAccountDto!): CreateAccountOutputDto!
+  account_login(input: LoginAccountDto!): LoginOutputDto!
+  account_edit(input: EditAccountInputDto!): EditAccountOutputDto!
+  account_verify(input: VerifyAccountInputDto!): VerifyAccountOutputDto!
+  restaurant_create(input: CreateRestaurantDto!): CreateRestaurantOutputDto!
+  restaurant_edit(input: EditRestaurantDto!): EditRestaurantOutputDto!
+  restaurant_delete(input: DeleteRestaurantDto!): DeleteRestaurantOutputDto!
+  dish_create(input: CreateDishDto!): CreateDishOutputDto!
+  dish_edit(input: EditDishDto!): EditDishOutputDto!
+  order_create(input: CreateOrderDto!): CreateOrderOutputDto!
+  order_edit(input: EditOrderInput!): EditOrderOutput!
+  isReady: Boolean!
+}
+
+input CreateAccountDto {
+  email: String!
+  password: String!
+  role: UserRole!
+}
+
+input LoginAccountDto {
+  email: String!
+  password: String!
+}
+
+input EditAccountInputDto {
+  email: String
+  password: String
+  role: UserRole
+  verified: Boolean
+  restaurants: [RestaurantInputType!]
+  order: [OrderInputType!]
+  rides: [OrderInputType!]
+}
+
+input RestaurantInputType {
+  name: String!
+  address: String = "Online"
+  avatar: String = "default-avatar.png"
+  verified: Boolean!
+  category: CategoryInputType
+  owner: UserInputType!
+  dishes: [RestaurantDishType!]!
+  order: [OrderInputType!]!
+}
+
+input CategoryInputType {
+  name: String!
+  avatar: String = "default-avatar.png"
+  restaurants: [RestaurantInputType!]!
+  slug: String!
+  restaurantCount: Float!
+}
+
+input UserInputType {
+  email: String!
+  password: String!
+  role: UserRole!
+  verified: Boolean!
+  restaurants: [RestaurantInputType!]!
+  order: [OrderInputType!]!
+  rides: [OrderInputType!]!
+}
+
+input OrderInputType {
+  customer: UserInputType!
+  driver: UserInputType
+  restaurant: RestaurantInputType!
+  items: [OrderItemInputType!]!
+  status: OrderStatus = Pending
+  totalPrice: Float
+}
+
+input OrderItemInputType {
+  dish: RestaurantDishType!
+  options: [OrderItemOptionInputType!]
+}
+
+input RestaurantDishType {
+  name: String!
+  price: Float!
+  photo: String!
+  description: String!
+  restaurant: RestaurantInputType
+  options: [DishOptionInputType!]
+}
+
+input OrderItemOptionInputType {
+  name: String!
+  choice: String
+}
+
+input VerifyAccountInputDto {
+  code: String!
+}
+
+input CreateRestaurantDto {
+  name: String!
+  address: String = "Online"
+  avatar: String = "default-avatar.png"
+  categoryName: String!
+}
+
+input EditRestaurantDto {
+  name: String
+  address: String = "Online"
+  avatar: String = "default-avatar.png"
+  categoryName: String
+  restaurantId: Float!
+}
+
+input DeleteRestaurantDto {
+  restaurantId: Float!
+}
+
+input CreateDishDto {
+  name: String!
+  price: Float!
+  photo: String!
+  description: String!
+  options: [DishOptionInputType!]
+  restaurantId: Float!
+}
+
+input EditDishDto {
+  name: String
+  price: Float
+  photo: String
+  description: String
+  options: [DishOptionInputType!]
+  dishId: Float!
+}
+
+input CreateOrderDto {
+  restaurantId: Int!
+  items: [CreateOrderItemInput!]!
+}
+
+input CreateOrderItemInput {
+  dishId: Int!
+  options: [OrderItemOptionInputType!]
+}
+
+input EditOrderInput {
+  status: OrderStatus = Pending
+}
+
+type Subscription {
+  orderSubscription: String!
+}
